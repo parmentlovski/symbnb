@@ -11,7 +11,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\AdRepository")
- * @ORM\HasLifecycleCallbacks
+ * @ORM\HasLifecycleCallbacks()
  * @UniqueEntity(
  *  fields={"title"},
  *  message="Une autre annonce possède déja ce titre, merci de le modifier"
@@ -82,6 +82,12 @@ class Ad
      */
     private $images;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="ads")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $author;
+
     public function __construct()
     {
         $this->images = new ArrayCollection();
@@ -95,8 +101,9 @@ class Ad
      * 
      * @return void
      */
-    public function initializeSlug(){
-        if(empty($this->slug)) {
+    public function initializeSlug()
+    {
+        if (empty($this->slug)) {
             $slugify = new Slugify();
             $this->slug = $slugify->slugify($this->title);
         }
@@ -218,6 +225,18 @@ class Ad
                 $image->setAd(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getAuthor(): ?User
+    {
+        return $this->author;
+    }
+
+    public function setAuthor(?User $author): self
+    {
+        $this->author = $author;
 
         return $this;
     }

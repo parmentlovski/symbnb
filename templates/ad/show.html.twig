@@ -6,8 +6,7 @@
 
 {% block body %}
 	<div class="ad-title" style="background-image: url({{ ad.coverImage }});">
-		<div
-			class="container">
+		<div class="container">
 			<h1>{{ ad.title }}</h1>
 			<p>{{ad.introduction}}</p>
 			<p class="h2">
@@ -55,20 +54,24 @@
 				</div>
 			</div>
 			<div class="col">
+				{% set a = ad.author %}
 				<div class="row mb-3 aligns-items-center">
-					<div class="col-4">
-						<img src="http://placehold.it/64x64" alt="Avatar de Joseph">
+					<div class="col-3">
+						<a href="{{ path('user_show', {'slug': a.slug}) }}">
+							<img src="{{a.picture}}" class="avatar avatar-medium" alt="Avatar de {{a.fullName}}">
+						</a>
 					</div>
 					<div class="col">
-						<h3>Joseph Dupont</h3>
+						<a href="{{ path('user_show', {'slug': a.slug}) }}">
+							<h3>{{ a.fullName }}</h3>
+						</a>
 						<span class="badge badge-primary">
-							3 annonces
+							{{ a.ads | length }}
+							annonces
 						</span>
 					</div>
 				</div>
-				<p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Natus id facere eius doloremque, saepe impedit aliquid laudantium deserunt repellendus sunt.</p>
-				<p>Aperiam eius facere minima atque deserunt praesentium aut rem natus doloribus, debitis, architecto, harum laborum culpa perspiciatis odit voluptas velit!</p>
-				<p>Consequatur, omnis? Dolores, omnis deleniti, ex quod repellendus fugiat facere ipsam nisi, sed laborum harum expedita ut eius. Quis, quos?</p>
+				{{a.description | raw}}
 			</div>
 		</div>
 	</div>
