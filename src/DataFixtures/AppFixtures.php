@@ -4,6 +4,7 @@ namespace App\DataFixtures;
 
 use App\Entity\Ad;
 use Faker\Factory;
+use App\Entity\Role;
 use App\Entity\User;
 use App\Entity\Image;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -22,6 +23,21 @@ class AppFixtures extends Fixture
     {
         $faker = Factory::create('fr-FR');
 
+        $adminRole = new Role();
+        $adminRole->setTitle('ROLE_ADMIN');
+        $manager->persist($adminRole);
+
+        $adminUser = new User();
+        $adminUser->setFirstName('Bryan')
+                  ->setLastName('Parmentelot')
+                  ->setEmail('parmentelot.bryan@hotmail.fr')
+                  ->setHash($this->encoder->encodePassword($adminUser, 'password'))
+                  ->setPicture('https://randomuser.me/api/portraits/men/30.jpg')
+                  ->setIntroduction($faker->sentence())
+                  ->setDescription('<p>' . join('</p><p>', $faker->paragraphs(3)) . '</p>')
+                  ->addUserRole($adminRole);
+        $manager->persist($adminUser);
+
         // nous gérons les utilisateures 
 
         $users = [];
@@ -29,6 +45,7 @@ class AppFixtures extends Fixture
         $genres = ['male', 'female'];
 
         for($i = 1; $i <= 10; $i++) {
+
             $user = new User();
 
             $genre = $faker->randomElement($genres);
