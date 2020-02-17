@@ -1,4 +1,8 @@
-		$('#add-image').click(function () { // Je récupère le numéro des futurs champs que je vais créer
+global.jQuery = require('jquery');
+let $ = global.jQuery;
+require('bootstrap');
+       
+       $('#add-image').click(function () { // Je récupère le numéro des futurs champs que je vais créer
 const index = +$('#widgets-counter').val();
 
 // Je récupère le prototype des entrées
